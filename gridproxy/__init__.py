@@ -96,9 +96,9 @@ def generate_proxycert(new_pkey, cert, key, **kwargs):
     serial = struct.unpack("<L", digest.final()[:4])[0]
     proxy.set_serial_number(int(serial & 0x7fffffff))
 
-    # Не совсем понятно, что и как с памятью в следующих операциях,
-    # поэтому по завершению всего действа будет перезагрузка
-    # сертификата через der    
+    # It is not completely clear what happens with memory allocation
+    # within the next calls, so after building the whole thing we are
+    # going to reload it through der encoding/decoding.
     proxy_subject = X509.X509_Name()
     subject = cert.get_subject()
     for idx in xrange(subject.entry_count()):
@@ -164,11 +164,11 @@ def generate_proxycert(new_pkey, cert, key, **kwargs):
 
 def split_proxy(proxy):
     u"""
-    Разделить содержимое proxy на два списка:
-    * certs - сертификаты
-    * keys - ключи.
+    Split the proxy string into two lists:
+    * certs - certificates
+    * keys - keys
 
-    Возвращает (certs, keys)
+    Returns (certs, keys)
     """
     lines = proxy.split("\n")
     result = ([], [])
