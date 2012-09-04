@@ -28,7 +28,10 @@ from M2Crypto import X509
 
 __all__ = ['VOMS', 'VOMSError']
 
-V = ctypes.CDLL('libvomsc.so.0')
+try:
+    V = ctypes.CDLL('libvomsc.so.0')
+except OSError:
+    V = ctypes.CDLL('libvomsapi.so.1')
 
 class _voms(ctypes.Structure):
     _fields_ = [("siglen", ctypes.c_int32),
