@@ -28,10 +28,28 @@ from M2Crypto import X509
 
 __all__ = ['VOMS', 'VOMSError']
 
-try:
-    V = ctypes.CDLL('libvomsc.so.0')
-except OSError:
-    V = ctypes.CDLL('libvomsapi.so.1')
+# Known and supported names of VOMS shared library
+dlnames = [
+    # EPEL-packed on RHEL, or Fedora:
+    'libvomsc.so.0', 'libvomsapi.so.1',
+    # from Condor distribution on MacOSX:
+    'libvomsapi_gcc64dbgpthr.0.dylib',
+    # from VDT distribution on MacOSX:
+    'libvomsapi_gcc32dbgpthr.0.dylib']
+
+V = None
+for dlname in dlnames:
+    try:
+        V = ctypes.CDLL(dlname)
+        break
+    except OSError:
+        pass
+
+if V is None:
+    raise RuntimeError("Could not load libvomsc/libvomsapi shared library")
+
+del dlnames
+del dlname
 
 class _voms(ctypes.Structure):
     _fields_ = [("siglen", ctypes.c_int32),

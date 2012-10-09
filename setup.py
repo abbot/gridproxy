@@ -7,7 +7,7 @@ except ImportError:
     from distutils.core import setup
     
 setup(name="gridproxy",
-      version="0.1",
+      version="0.2",
       description="Small library for working with grid proxy certificates and VOMS extensions",
       long_description="""\
 Small library for working with grid proxy certificates and VOMS \
@@ -16,7 +16,8 @@ regular voms libraries. \
 """,
       classifiers=['Development Status :: 4 - Beta',
                    'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
-                   'Operating System :: POSIX',
+                   'Operating System :: POSIX :: Linux',
+                   'Operating System :: MacOS :: MacOS X',
                    'Programming Language :: Python',
                    'Topic :: Internet',
                    'Topic :: Security :: Cryptography',
